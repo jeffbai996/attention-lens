@@ -1,0 +1,7 @@
+# Dev-only tooling (not needed to run the app).
+#   pip install -r requirements-dev.txt
+#   python -m playwright install chromium
+# Then: python dev_screenshot.py  -> writes shots/full.png & shots/detail.png
+# (dev_screenshot.py mocks the model, so no GPU or model download is needed.)
+playwright>=1.50
+numpy>=1.24

@@ -19,3 +19,6 @@ env/
 *.swp
 .idea/
 .vscode/
+
+# Dev screenshot output
+shots/
