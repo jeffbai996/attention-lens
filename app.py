@@ -93,187 +93,175 @@ INDEX_HTML = r"""<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>attention-lens · gpt2-small</title>
 <style>
-  /* ---- aesthetic: calm, paper-light "research instrument". A warm near-white
-        canvas, slate ink, and a single blue data ramp for attention weight.
-        Inter for everything (a refined grotesque, in the Anthropic-Sans family);
-        a mono ONLY for the model's raw tokens, since those literally ARE data. ---- */
+  /* ---- dark "research instrument": warm near-black canvas, soft off-white ink,
+        a blue ramp for attention weight, one warm-clay accent for the selection.
+        Inter everywhere (Anthropic-Sans-family grotesque); mono ONLY for raw tokens. ---- */
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
   :root{
-    --bg:#f6f7f9; --panel:#ffffff; --panel-2:#fbfcfd;
-    --line:#e3e7ec; --line-2:#eef1f4;
-    --ink:#1c2530; --ink-soft:#48566a; --dim:#75839a; --dimmer:#9aa6b8;
-    --blue:#2f6df0; --blue-deep:#1b3f9e; --blue-soft:#d6e2fb;
-    --accent:#c2603f;            /* warm clay accent for the selected head */
-    --accent-soft:#f4ddd2;
-    --grid-empty:#eef2f7;
+    --bg:#15171c; --panel:#1c1f26; --panel-2:#232730; --raise:#272c36;
+    --line:#2b303b; --line-2:#343a47;
+    --ink:#eef1f6; --ink-soft:#b6beca; --dim:#838c9c; --dimmer:#5b6373;
+    --blue:#5b8cff; --blue-bright:#79a3ff; --blue-soft:#22304f;
+    --accent:#e0875a; --accent-soft:#3a2a20;
+    --grid-empty:#21252e;
     --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
   }
   *{box-sizing:border-box}
   html,body{margin:0;height:100%}
   body{
-    background:var(--bg);
-    color:var(--ink); font-family:'Inter',system-ui,sans-serif; font-weight:400;
+    background:var(--bg); color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif; font-weight:400;
     -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
-    min-height:100vh; line-height:1.5;
+    min-height:100vh; line-height:1.55;
   }
-  .wrap{max-width:1080px;margin:0 auto;padding:40px 26px 96px}
-  a{color:var(--blue);text-decoration:none}
+  .wrap{max-width:1000px;margin:0 auto;padding:44px 26px 110px}
+  a{color:var(--blue-bright);text-decoration:none}
   a:hover{text-decoration:underline}
 
-  /* ---- header ---- */
-  header{display:flex;align-items:baseline;gap:13px;flex-wrap:wrap;margin-bottom:8px}
-  h1{font-size:25px;font-weight:700;letter-spacing:-.025em;margin:0;
+  header{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+  h1{font-size:23px;font-weight:600;letter-spacing:-.02em;margin:0;
     display:flex;align-items:center;gap:10px;color:var(--ink)}
-  h1 .dot{width:9px;height:9px;border-radius:50%;background:var(--blue);
-    box-shadow:0 0 0 4px var(--blue-soft)}
-  .sub{color:var(--dim);font-size:13.5px}
+  h1 .dot{width:8px;height:8px;border-radius:50%;background:var(--blue);
+    box-shadow:0 0 14px 1px var(--blue)}
+  .sub{color:var(--dim);font-size:13px}
   .meta{margin-left:auto;color:var(--dimmer);font-family:var(--mono);
     font-size:11px;text-transform:uppercase;letter-spacing:.1em}
 
-  /* ---- intro / explainer ---- */
-  .lede{font-size:15.5px;color:var(--ink-soft);max-width:74ch;margin:14px 0 4px}
+  .lede{font-size:15px;color:var(--ink-soft);max-width:72ch;margin:0 0 22px}
   .lede b{color:var(--ink);font-weight:600}
-  details.explain{margin:18px 0 28px;border:1px solid var(--line);border-radius:12px;
-    background:var(--panel);overflow:hidden}
-  details.explain>summary{cursor:pointer;padding:14px 18px;font-weight:600;font-size:14px;
-    color:var(--ink);list-style:none;display:flex;align-items:center;gap:9px;user-select:none}
-  details.explain>summary::-webkit-details-marker{display:none}
-  details.explain>summary .chev{color:var(--blue);transition:transform .2s;font-size:12px}
-  details.explain[open]>summary .chev{transform:rotate(90deg)}
-  details.explain .body{padding:2px 18px 18px;font-size:14px;color:var(--ink-soft);
-    border-top:1px solid var(--line-2)}
-  details.explain .body p{margin:13px 0}
-  details.explain .body strong{color:var(--ink);font-weight:600}
-  .kbd{font-family:var(--mono);font-size:12px;background:var(--panel-2);
-    border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:var(--ink-soft)}
 
-  /* ---- console ---- */
-  .console{display:flex;gap:10px;margin-bottom:9px}
+  details.explain{margin:0 0 26px;border:1px solid var(--line);border-radius:12px;
+    background:var(--panel);overflow:hidden}
+  details.explain>summary{cursor:pointer;padding:13px 17px;font-weight:500;font-size:13.5px;
+    color:var(--ink-soft);list-style:none;display:flex;align-items:center;gap:9px;user-select:none}
+  details.explain>summary:hover{color:var(--ink)}
+  details.explain>summary::-webkit-details-marker{display:none}
+  details.explain>summary .chev{color:var(--blue);transition:transform .2s;font-size:11px}
+  details.explain[open]>summary .chev{transform:rotate(90deg)}
+  details.explain .body{padding:4px 17px 18px;font-size:13.5px;color:var(--ink-soft);
+    border-top:1px solid var(--line-2)}
+  details.explain .body p{margin:12px 0}
+  details.explain .body strong{color:var(--ink);font-weight:600}
+
+  .console{display:flex;gap:10px;margin-bottom:10px}
   input[type=text]{flex:1;background:var(--panel);border:1px solid var(--line);
-    color:var(--ink);font-family:var(--mono);font-size:14.5px;
+    color:var(--ink);font-family:var(--mono);font-size:14px;
     padding:13px 15px;border-radius:10px;outline:none;transition:border-color .15s,box-shadow .15s}
+  input[type=text]::placeholder{color:var(--dimmer)}
   input[type=text]:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft)}
-  button{background:var(--blue);color:#fff;border:0;font-family:'Inter';
+  button{background:var(--blue);color:#0b1220;border:0;font-family:'Inter';
     font-weight:600;font-size:14px;padding:0 26px;border-radius:10px;cursor:pointer;
     transition:background .15s,transform .08s}
-  button:hover{background:var(--blue-deep)}
+  button:hover{background:var(--blue-bright)}
   button:active{transform:translateY(1px)}
   button:disabled{opacity:.5;cursor:wait}
-  .examples{font-size:12.5px;color:var(--dim);margin:0 2px 22px}
+  .examples{font-size:12.5px;color:var(--dim);margin:0 2px 26px}
   .examples b{color:var(--ink-soft);font-weight:500}
-  .ex{font-family:var(--mono);font-size:12px;color:var(--blue);cursor:pointer;
+  .ex{font-family:var(--mono);font-size:12px;color:var(--blue-bright);cursor:pointer;
     border-bottom:1px dashed var(--blue-soft)}
-  .ex:hover{border-bottom-style:solid}
+  .ex:hover{border-bottom-color:var(--blue-bright)}
 
-  .predline{font-family:var(--mono);font-size:13.5px;color:var(--ink-soft);
-    margin:0 2px 6px;min-height:20px}
+  .predline{font-family:var(--mono);font-size:13px;color:var(--ink-soft);
+    margin:0 2px 24px;min-height:20px}
   .predline b{color:var(--accent);font-weight:600;background:var(--accent-soft);
-    padding:1px 7px;border-radius:5px}
+    padding:2px 8px;border-radius:6px}
 
-  /* ---- "how to read" callout above the grid ---- */
-  .readme{display:flex;gap:18px;flex-wrap:wrap;background:var(--panel);
-    border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:0 0 18px;
-    font-size:13px;color:var(--ink-soft)}
-  .readme .col{flex:1;min-width:190px}
-  .readme .col h4{margin:0 0 4px;font-size:12px;text-transform:uppercase;
-    letter-spacing:.07em;color:var(--dim);font-weight:600}
-  .readme .swatch{display:inline-block;width:46px;height:9px;border-radius:3px;
-    vertical-align:middle;margin:0 6px;
-    background:linear-gradient(90deg,var(--grid-empty),var(--blue))}
+  /* ---- the narration card: plain-English "what this head is doing" ---- */
+  .narrate{background:linear-gradient(180deg,var(--panel-2),var(--panel));
+    border:1px solid var(--line-2);border-radius:13px;padding:18px 20px;margin:0 0 16px}
+  .narrate .tag{display:inline-block;font-family:var(--mono);font-size:11px;
+    letter-spacing:.04em;color:var(--blue-bright);background:var(--blue-soft);
+    padding:3px 9px;border-radius:6px;margin-bottom:9px}
+  .narrate h3{margin:0 0 6px;font-size:16px;font-weight:600;color:var(--ink)}
+  .narrate h3 b{color:var(--accent);font-family:var(--mono);font-weight:600}
+  .narrate p{margin:0;font-size:14px;color:var(--ink-soft);max-width:80ch}
+  .narrate .links{margin-top:12px;display:flex;flex-wrap:wrap;gap:7px}
+  .narrate .lnk{font-family:var(--mono);font-size:12px;background:var(--raise);
+    border:1px solid var(--line-2);border-radius:7px;padding:5px 10px;color:var(--ink-soft)}
+  .narrate .lnk b{color:var(--ink)}
+  .narrate .lnk .w{color:var(--blue-bright)}
+  .narrate .lnk .arrow{color:var(--dimmer);margin:0 5px}
 
   /* ---- grid of all heads ---- */
   .gridwrap{background:var(--panel);border:1px solid var(--line);border-radius:14px;
-    padding:18px 20px 20px}
-  .gridtitle{font-size:13px;color:var(--dim);margin:0 0 14px;font-weight:500}
-  .gridtitle b{color:var(--ink)}
+    padding:16px 18px 18px}
+  .gridtitle{font-size:12.5px;color:var(--dim);margin:0 0 14px;display:flex;
+    justify-content:space-between;flex-wrap:wrap;gap:8px}
+  .gridtitle b{color:var(--ink-soft);font-weight:500}
+  .gridtitle .legend{display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10px;color:var(--dim)}
+  .gridtitle .legend .bar{height:8px;width:64px;border-radius:4px;
+    background:linear-gradient(90deg,var(--grid-empty),var(--blue))}
   .layers{display:flex;flex-direction:column;gap:3px}
   .layer-row{display:flex;align-items:center;gap:10px}
-  .layer-label{width:30px;flex:none;font-family:var(--mono);font-size:10px;
-    color:var(--dim);text-align:right;letter-spacing:.04em}
+  .layer-label{width:28px;flex:none;font-family:var(--mono);font-size:10px;
+    color:var(--dim);text-align:right}
   .heads{display:grid;grid-template-columns:repeat(12,1fr);gap:3px;flex:1}
   .head{aspect-ratio:1;background:var(--grid-empty);border-radius:3px;cursor:pointer;
     position:relative;overflow:hidden;border:1.5px solid transparent;
     transition:border-color .12s,transform .1s,box-shadow .12s}
-  .head:hover{border-color:var(--blue);transform:scale(1.1);z-index:2;
-    box-shadow:0 3px 10px -2px rgba(47,109,240,.35)}
+  .head:hover{border-color:var(--blue);transform:scale(1.12);z-index:2;
+    box-shadow:0 4px 14px -2px rgba(91,140,255,.5)}
   .head canvas{width:100%;height:100%;display:block;image-rendering:pixelated}
-  .head.sel{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+  .head.sel{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft),0 0 14px -2px var(--accent)}
+  .head .badge{position:absolute;top:1px;left:1px;font-family:var(--mono);font-size:7px;
+    line-height:1;padding:1px 2px;border-radius:2px;background:rgba(91,140,255,.85);
+    color:#0b1220;font-weight:600;pointer-events:none}
   .colhdr{display:grid;grid-template-columns:repeat(12,1fr);gap:3px;flex:1;margin-bottom:4px}
-  .colhdr span{font-family:var(--mono);font-size:9px;color:var(--dimmer);
-    text-align:center;letter-spacing:.03em}
+  .colhdr span{font-family:var(--mono);font-size:9px;color:var(--dimmer);text-align:center}
   .colhdr-row{display:flex;align-items:center;gap:10px;margin-bottom:5px}
-  .axhint{font-size:11.5px;color:var(--dim);margin:12px 2px 0;display:flex;
+  .axhint{font-size:11px;color:var(--dimmer);margin:12px 2px 0;display:flex;
     justify-content:space-between;font-family:var(--mono)}
+  .badgekey{font-size:11.5px;color:var(--dim);margin:14px 2px 0;display:flex;gap:16px;flex-wrap:wrap}
+  .badgekey span b{color:var(--blue-bright);font-family:var(--mono)}
 
-  /* ---- detail panel ---- */
-  .detail{margin-top:22px;background:var(--panel);border:1px solid var(--line);
-    border-radius:14px;padding:24px;min-height:120px}
-  .detail .empty{color:var(--dim);font-size:13.5px;text-align:center;padding:30px 0}
-  .detail h2{margin:0 0 4px;font-size:17px;font-weight:600;color:var(--ink)}
-  .detail h2 span{color:var(--accent);font-family:var(--mono)}
-  .detail .hint{color:var(--ink-soft);font-size:13.5px;margin:0 0 18px;max-width:78ch}
+  /* ---- detail heatmap ---- */
+  .detail{margin-top:18px;background:var(--panel);border:1px solid var(--line);
+    border-radius:14px;padding:22px;min-height:90px}
+  .detail .empty{color:var(--dim);font-size:13.5px;text-align:center;padding:26px 0}
+  .detail .hint{color:var(--ink-soft);font-size:13px;margin:0 0 16px;max-width:80ch}
   .detail .hint b{color:var(--ink);font-weight:600}
   .bigmap{display:grid;gap:2px;overflow-x:auto;padding-bottom:6px}
-  .bigmap .cell{aspect-ratio:1;border-radius:2px;min-width:14px;border:1px solid rgba(0,0,0,.02)}
+  .bigmap .cell{aspect-ratio:1;border-radius:2px;min-width:15px}
   .bigmap .axhead{font-family:var(--mono);font-size:10px;color:var(--ink-soft);
     white-space:nowrap;display:flex;align-items:center;justify-content:flex-end;
     padding-right:7px;min-width:0}
   .bigmap .axtop{font-family:var(--mono);font-size:10px;color:var(--ink-soft);
     writing-mode:vertical-rl;transform:rotate(180deg);justify-self:center;
-    max-height:78px;overflow:hidden}
-  .legend{display:flex;align-items:center;gap:8px;margin-top:16px;color:var(--dim);
-    font-family:var(--mono);font-size:10px;letter-spacing:.04em}
-  .legend .bar{height:9px;width:130px;border-radius:5px;
-    background:linear-gradient(90deg,var(--grid-empty),var(--blue))}
-  .err{color:#c0392b;font-family:var(--mono);font-size:13px;background:#fdecea;
-    border:1px solid #f5c6cb;border-radius:8px;padding:12px 14px}
+    max-height:80px;overflow:hidden}
+  .err{color:#ff8f8f;font-family:var(--mono);font-size:13px;background:#3a1f22;
+    border:1px solid #5e2c30;border-radius:8px;padding:12px 14px}
 
-  footer{margin-top:46px;padding-top:18px;border-top:1px solid var(--line);
-    font-size:12.5px;color:var(--dim)}
+  footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);
+    font-size:12px;color:var(--dim)}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
     <h1><span class="dot"></span>attention-lens</h1>
-    <span class="sub">gpt2-small · 12 layers × 12 heads · live attention</span>
+    <span class="sub">gpt2-small · 12 layers × 12 heads</span>
     <span class="meta" id="device">·</span>
   </header>
 
-  <p class="lede">A transformer "reads" by letting each token <b>look back</b> at
-  earlier tokens and pull in information from them. That looking-back is
-  <b>attention</b>. This tool runs your sentence through GPT-2 small and shows you
-  <b>all 144 attention heads at once</b> — every head is a tiny map of who-looked-at-whom.
-  Click any head to blow it up.</p>
+  <p class="lede">A transformer reads by letting each word <b>look back</b> at earlier
+  words and pull in meaning from them — that looking-back is <b>attention</b>. This runs
+  your sentence through GPT-2 and shows all <b>144 attention heads</b>. Click any head and
+  it'll tell you, <b>in plain English</b>, what that head is doing to your sentence.</p>
 
   <details class="explain">
-    <summary><span class="chev">▶</span>New to this? A 30-second primer on attention heads</summary>
+    <summary><span class="chev">▶</span>30-second primer — what a head is, and how to read it</summary>
     <div class="body">
-      <p><strong>What a "head" is.</strong> GPT-2 small has 12 layers, and each layer
-      has 12 independent <strong>attention heads</strong> — 144 in total. Each head
-      learns its own rule for which earlier tokens a given token should pay attention
-      to. Some are boring plumbing; a few do real reasoning.</p>
-      <p><strong>How to read a single head's map.</strong> It's a grid. Each
-      <strong>row is a query</strong> token (the one doing the looking) and each
-      <strong>column is a key</strong> token (a candidate to look at). A bright cell at
-      (row&nbsp;<span class="kbd">i</span>, col&nbsp;<span class="kbd">j</span>) means
-      "token&nbsp;i paid a lot of attention to token&nbsp;j." Rows sum to 1 — each token
-      spreads a fixed budget of attention across the tokens before it.</p>
-      <p><strong>Why it's a triangle.</strong> A token can only look <em>backwards</em>
-      (the model predicts left-to-right and mustn't peek at the future), so the entire
-      upper-right triangle is always blank. All the signal lives on or below the diagonal.</p>
-      <p><strong>Heads you can spot by eye:</strong></p>
-      <p>• <strong>Attention-sink heads</strong> — a bright <em>first column</em>: nearly
-      everything dumps attention onto the first token. Common, low-level, basically idle.<br>
-      • <strong>Previous-token heads</strong> — a bright line <em>just below the diagonal</em>:
-      each token attends to the one right before it. The model's short-term memory.<br>
-      • <strong>Induction heads</strong> (often layers 5–6) — the reasoning primitive. On
-      repeated text ("the cat sat. the cat ___") they look back to <em>what followed the
-      last time</em> this token appeared. Try a sentence with a repeated word.<br>
-      • <strong>Name-mover heads</strong> (later layers) — on the John/Mary sentence, the
-      final token attends strongly back to " Mary". You're literally seeing (part of) the
-      circuit that produces the answer.</p>
+      <p><strong>A "head"</strong> is one of 144 little circuits (12 layers × 12 heads).
+      Each learns its own rule for which earlier words a word should pay attention to.</p>
+      <p><strong>Each head's map is a grid:</strong> every <strong>row is a query</strong>
+      (a word doing the looking), every <strong>column is a key</strong> (a word it might
+      look at). A bright cell = "this row's word paid a lot of attention to that column's
+      word." It's a triangle because words can only look <em>backwards</em>, never at the future.</p>
+      <p><strong>Recognizable head types:</strong> a bright <em>first column</em> = an
+      idle "attention-sink" head; a bright line <em>just below the diagonal</em> = a
+      "previous-token" head (short-term memory); late-layer heads where the last word
+      points back at the answer = "name-mover" heads doing the actual reasoning.</p>
     </div>
   </details>
 
@@ -285,44 +273,34 @@ INDEX_HTML = r"""<!DOCTYPE html>
   </div>
   <div class="examples"><b>try:</b>
     <span class="ex" data-ex="When John and Mary went to the store, John gave a drink to">the IOI sentence</span> ·
-    <span class="ex" data-ex="The cat sat on the mat. The cat sat on the">a repeat (hunt induction heads)</span> ·
+    <span class="ex" data-ex="The cat sat on the mat. The cat sat on the">a repeat (induction heads)</span> ·
     <span class="ex" data-ex="Paris is the capital of France. London is the capital of">a fact</span>
   </div>
   <div class="predline" id="pred"></div>
 
-  <div class="readme" id="readme" style="display:none">
-    <div class="col">
-      <h4>Reading the grid below</h4>
-      Each small square is one head. Inside it, brightness = attention weight
-      <span class="swatch"></span> (pale = none, blue = strong). Rows run top→bottom by
-      layer (<b>L0</b> input-side → <b>L11</b> output-side); columns are heads <b>H0–H11</b>.
-    </div>
-    <div class="col">
-      <h4>What to do</h4>
-      <b>Hover</b> to enlarge a head, <b>click</b> to open its full query×key heatmap below.
-      Look for the patterns from the primer: a hot first column (sink), a bright
-      sub-diagonal (previous-token), or late-layer heads pointing at the answer token.
-    </div>
-  </div>
+  <div class="narrate" id="narrate" style="display:none"></div>
 
   <div class="gridwrap" id="gridwrap" style="display:none">
-    <p class="gridtitle">All <b>144 heads</b> — <span id="gridtok"></span></p>
+    <div class="gridtitle">
+      <span>All <b>144 heads</b> · <span id="gridtok"></span> · click any to read it</span>
+      <span class="legend">weak<span class="bar"></span>strong attention</span>
+    </div>
     <div class="colhdr-row" id="colhdrRow" style="display:none">
       <span class="layer-label"></span>
       <div class="colhdr" id="colhdr"></div>
     </div>
     <div class="layers" id="layers"></div>
-    <div class="axhint"><span>← layer 0 (top) reads the input</span><span>layer 11 (bottom) writes the prediction →</span></div>
+    <div class="axhint"><span>↑ layer 0 reads the input</span><span>layer 11 writes the prediction ↓</span></div>
+    <div class="badgekey" id="badgekey"></div>
   </div>
 
   <div class="detail" id="detail">
-    <div class="empty">Run a sentence, then click any head above to inspect its full attention map.</div>
+    <div class="empty">Run a sentence to begin.</div>
   </div>
 
   <footer>
     GPT-2 small via <a href="https://github.com/TransformerLensOrg/TransformerLens" target="_blank" rel="noopener">TransformerLens</a>.
-    Attention weights are read straight from the model's cache — nothing is faked or post-processed.
-    A playground for mechanistic interpretability.
+    Weights are read straight from the model's cache — nothing faked or post-processed.
   </footer>
 </div>
 
@@ -331,13 +309,13 @@ const $ = s => document.querySelector(s);
 let DATA = null;          // last response
 let SEL = null;           // [layer, head]
 
-// blue colormap: weight 0..1 -> rgb (pale grey-blue -> deep blue)
+// blue ramp on dark: empty(#21252e) -> bright blue(#5b8cff), eased so faint reads
 function lerp(a,b,t){return Math.round(a+(b-a)*t);}
-function colorize(w){
-  // pale (#eef2f7) -> blue (#2f6df0), eased so faint weights stay readable
-  const t = Math.pow(w, 0.75);
-  return `rgb(${lerp(238,47,t)},${lerp(242,109,t)},${lerp(247,240,t)})`;
+function rgbAt(w){
+  const t = Math.pow(Math.max(0,Math.min(1,w)), 0.7);
+  return [lerp(33,91,t), lerp(37,140,t), lerp(46,255,t)];
 }
+function colorize(w){const c=rgbAt(w);return `rgb(${c[0]},${c[1]},${c[2]})`;}
 
 function drawThumb(canvas, mat){
   const n = mat.length;
@@ -345,40 +323,93 @@ function drawThumb(canvas, mat){
   const ctx = canvas.getContext('2d');
   const img = ctx.createImageData(n, n);
   for(let q=0;q<n;q++) for(let k=0;k<n;k++){
-    const t = Math.pow(mat[q][k], 0.75);
-    const i = (q*n+k)*4;
-    img.data[i]   = lerp(238,47,t);
-    img.data[i+1] = lerp(242,109,t);
-    img.data[i+2] = lerp(247,240,t);
-    img.data[i+3] = 255;
+    const c=rgbAt(mat[q][k]); const i=(q*n+k)*4;
+    img.data[i]=c[0]; img.data[i+1]=c[1]; img.data[i+2]=c[2]; img.data[i+3]=255;
   }
   ctx.putImageData(img,0,0);
 }
 
+// ---- the brain: classify a head's pattern + extract its strongest links ----
+function analyzeHead(mat){
+  const n = mat.length;
+  if(n<2) return {type:'tiny', label:'', desc:'Too few tokens to show a pattern — try a longer sentence.', links:[]};
+  let sink=0, prev=0, diag=0, sinkN=0, prevN=0, diagN=0;
+  for(let q=0;q<n;q++){
+    sink+=mat[q][0]; sinkN++;
+    if(q>=1){ prev+=mat[q][q-1]; prevN++; }
+    diag+=mat[q][q]; diagN++;
+  }
+  sink/=sinkN; prev/=prevN; diag/=diagN;
+
+  // strongest off-trivial links (exclude BOS col 0, exclude self, prefer informative)
+  const links=[];
+  for(let q=1;q<n;q++){
+    let bk=-1,bw=-1;
+    for(let k=1;k<=q;k++){ if(k===q) continue; if(mat[q][k]>bw){bw=mat[q][k];bk=k;} }
+    if(bk>=0 && bw>0.12) links.push({q,k:bk,w:bw});
+  }
+  links.sort((a,b)=>b.w-a.w);
+  const top = links.slice(0,4);
+
+  // classify
+  let type,label,desc;
+  const lastRow = mat[n-1];
+  let lastBk=-1,lastBw=-1;
+  for(let k=1;k<n-1;k++){ if(lastRow[k]>lastBw){lastBw=lastRow[k];lastBk=k;} }
+
+  if(sink>0.55 && sink>prev && sink>diag){
+    type='sink'; label='attention-sink head';
+    desc='Almost every word dumps its attention onto the very first token (the bright left column). This is common, low-level plumbing — a kind of "do nothing" default. Not where the interesting computation happens.';
+  } else if(prev>0.45 && prev>sink){
+    type='prev'; label='previous-token head';
+    desc='Each word attends to the one right before it — the bright line just under the diagonal. This is the model\'s short-term memory, copying positional/recency information forward. A building block other heads rely on.';
+  } else if(diag>0.5 && diag>prev && diag>sink){
+    type='self'; label='self / positional head';
+    desc='Words mostly attend to themselves (the diagonal). Often a positional or pass-through head that mainly preserves a token\'s own information.';
+  } else if(lastBk>=0 && lastBw>0.25){
+    type='mover'; label='content / mover head';
+    desc='This head moves specific information between words. Notably, the final word is looking back hard at an earlier content word — on the John/Mary sentence, that\'s the "name-mover" behaviour that helps produce the answer.';
+  } else {
+    type='mixed'; label='mixed / distributed head';
+    desc='No single clean rule — attention is spread across several earlier words. Many mid-network heads blend signals like this; the strongest individual links are listed below.';
+  }
+  return {type,label,desc,links:top,scores:{sink,prev,diag}};
+}
+
+const BADGE = {sink:'sink', prev:'prev', mover:'move'};
+
 function renderGrid(){
-  const L = DATA.n_layers, H = DATA.n_heads;
-  const colhdr = $('#colhdr'); colhdr.innerHTML='';
-  for(let h=0;h<H;h++){ const s=document.createElement('span'); s.textContent='H'+h; colhdr.appendChild(s); }
+  const L=DATA.n_layers, H=DATA.n_heads;
+  const colhdr=$('#colhdr'); colhdr.innerHTML='';
+  for(let h=0;h<H;h++){const s=document.createElement('span');s.textContent='H'+h;colhdr.appendChild(s);}
   $('#colhdrRow').style.display='flex';
 
-  const layers = $('#layers'); layers.innerHTML='';
+  let nSink=0,nPrev=0,nMove=0;
+  const layers=$('#layers'); layers.innerHTML='';
   for(let l=0;l<L;l++){
-    const row = document.createElement('div'); row.className='layer-row';
-    const lab = document.createElement('div'); lab.className='layer-label'; lab.textContent='L'+l;
-    const heads = document.createElement('div'); heads.className='heads';
+    const row=document.createElement('div'); row.className='layer-row';
+    const lab=document.createElement('div'); lab.className='layer-label'; lab.textContent='L'+l;
+    const heads=document.createElement('div'); heads.className='heads';
     for(let h=0;h<H;h++){
-      const cell = document.createElement('div'); cell.className='head';
+      const cell=document.createElement('div'); cell.className='head';
       cell.dataset.l=l; cell.dataset.h=h;
-      cell.title = `layer ${l}, head ${h} — click to inspect`;
-      const cv = document.createElement('canvas');
-      drawThumb(cv, DATA.patterns[l][h]);
-      cell.appendChild(cv);
-      cell.onclick = ()=>selectHead(l,h);
+      const a=analyzeHead(DATA.patterns[l][h]);
+      cell.title=`L${l} H${h} — ${a.label} · click to read`;
+      const cv=document.createElement('canvas'); drawThumb(cv,DATA.patterns[l][h]); cell.appendChild(cv);
+      if(BADGE[a.type]){
+        const b=document.createElement('div'); b.className='badge'; b.textContent=BADGE[a.type]; cell.appendChild(b);
+        if(a.type==='sink')nSink++; else if(a.type==='prev')nPrev++; else if(a.type==='mover')nMove++;
+      }
+      cell.onclick=()=>selectHead(l,h);
       heads.appendChild(cell);
     }
-    row.appendChild(lab); row.appendChild(heads);
-    layers.appendChild(row);
+    row.appendChild(lab); row.appendChild(heads); layers.appendChild(row);
   }
+  $('#badgekey').innerHTML =
+    `<span><b>sink</b> ${nSink} attention-sink</span>`+
+    `<span><b>prev</b> ${nPrev} previous-token</span>`+
+    `<span><b>move</b> ${nMove} content/mover</span>`+
+    `<span style="color:var(--dimmer)">unlabelled = mixed/distributed</span>`;
 }
 
 function selectHead(l,h){
@@ -386,26 +417,39 @@ function selectHead(l,h){
   document.querySelectorAll('.head.sel').forEach(e=>e.classList.remove('sel'));
   const cell=document.querySelector(`.head[data-l="${l}"][data-h="${h}"]`);
   if(cell) cell.classList.add('sel');
-  renderDetail();
-  $('#detail').scrollIntoView({behavior:'smooth',block:'nearest'});
+  renderNarration(); renderDetail();
+  $('#narrate').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function renderNarration(){
+  if(!SEL||!DATA) return;
+  const [l,h]=SEL;
+  const a=analyzeHead(DATA.patterns[l][h]);
+  const toks=DATA.tokens.map(t=>t.replace(/ /g,'·'));
+  let linkHtml='';
+  if(a.links.length){
+    linkHtml='<div class="links">'+a.links.map(x=>
+      `<span class="lnk"><b>${esc(toks[x.q])}</b><span class="arrow">→</span><b>${esc(toks[x.k])}</b> <span class="w">${x.w.toFixed(2)}</span></span>`
+    ).join('')+'</div>';
+  }
+  $('#narrate').style.display='block';
+  $('#narrate').innerHTML=
+    `<span class="tag">${a.label}</span>`+
+    `<h3>layer <b>${l}</b> · head <b>${h}</b> — what it's doing</h3>`+
+    `<p>${a.desc}</p>`+
+    (linkHtml? `<p style="margin-top:12px;font-size:12.5px;color:var(--dim)">strongest links (which word looks at which, and how hard):</p>`+linkHtml : '');
 }
 
 function renderDetail(){
   const d=$('#detail'); if(!SEL||!DATA){return;}
   const [l,h]=SEL;
   const mat=DATA.patterns[l][h];
-  const toks=DATA.tokens.map(t=>t.replace(/ /g,'·'));   // show spaces as ·
+  const toks=DATA.tokens.map(t=>t.replace(/ /g,'·'));
   const n=toks.length;
-
-  let html=`<h2>layer <span>${l}</span> · head <span>${h}</span></h2>`;
-  html+=`<p class="hint"><b>Each row is a query token</b> (the token doing the looking); `+
-        `<b>each column is a key token</b> (the token being looked at). A brighter cell means the `+
-        `row's token paid more attention to the column's token. The blank upper-right triangle is `+
-        `the causal mask — tokens can only attend backwards, never to the future. Spaces are shown as ·.</p>`;
-
-  const cols = `minmax(78px,auto) repeat(${n}, minmax(14px,1fr))`;
+  let html=`<p class="hint"><b>The full map.</b> Rows = query words (doing the looking), columns = key words (being looked at). Brighter = more attention. The blank upper-right triangle is the causal mask (no peeking ahead). Hover a cell for the exact weight.</p>`;
+  const cols=`minmax(80px,auto) repeat(${n}, minmax(15px,1fr))`;
   html+=`<div class="bigmap" style="grid-template-columns:${cols}">`;
-  html+=`<div></div>`;                                   // corner
+  html+=`<div></div>`;
   for(let k=0;k<n;k++) html+=`<div class="axtop">${esc(toks[k])}</div>`;
   for(let q=0;q<n;q++){
     html+=`<div class="axhead">${esc(toks[q])}</div>`;
@@ -415,30 +459,41 @@ function renderDetail(){
     }
   }
   html+=`</div>`;
-  html+=`<div class="legend"><span>0.0</span><span class="bar"></span><span>1.0 — attention weight</span></div>`;
   d.innerHTML=html;
 }
 
 function esc(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+
+// auto-pick the most illustrative head to open first: prefer a clear mover, else prev, else last layer
+function pickInterestingHead(){
+  let best=null;
+  for(let l=DATA.n_layers-1;l>=0;l--) for(let h=0;h<DATA.n_heads;h++){
+    const a=analyzeHead(DATA.patterns[l][h]);
+    if(a.type==='mover'){ if(!best){best=[l,h];} }
+  }
+  if(best) return best;
+  for(let l=2;l<DATA.n_layers;l++) for(let h=0;h<DATA.n_heads;h++){
+    if(analyzeHead(DATA.patterns[l][h]).type==='prev') return [l,h];
+  }
+  return [DATA.n_layers-1,0];
+}
 
 async function run(){
   const text=$('#txt').value.trim(); if(!text)return;
   const btn=$('#run'); btn.disabled=true; btn.textContent='running…';
   $('#pred').textContent='';
   try{
-    const r=await fetch('/api/attn',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({text})});
+    const r=await fetch('/api/attn',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text})});
     const j=await r.json();
     if(j.error){$('#detail').innerHTML=`<div class="err">error: ${esc(String(j.error))}</div>`;return;}
     DATA=j; SEL=null;
-    $('#device').textContent='model: gpt2-small';
-    $('#pred').innerHTML=`the model's next-token prediction → <b>${esc(j.prediction.replace(/ /g,'·'))}</b>`;
-    $('#readme').style.display='flex';
+    $('#device').textContent='gpt2-small';
+    $('#pred').innerHTML=`the model's next-token guess → <b>${esc(j.prediction.replace(/ /g,'·'))}</b>`;
     $('#gridwrap').style.display='block';
-    $('#gridtok').textContent=`${DATA.tokens.length} tokens · click any to inspect`;
+    $('#gridtok').textContent=`${DATA.tokens.length} tokens`;
     renderGrid();
-    $('#detail').innerHTML=`<div class="empty">Click any head above to open its full attention map. (Tip: the last few layers, on the John/Mary sentence, are where the answer-moving heads live.)</div>`;
-    selectHead(DATA.n_layers-1, 0);   // auto-open one interesting head
+    const pick=pickInterestingHead();
+    selectHead(pick[0],pick[1]);
   }catch(e){
     $('#detail').innerHTML=`<div class="err">request failed: ${esc(String(e))}</div>`;
   }finally{btn.disabled=false; btn.textContent='run';}
@@ -447,7 +502,7 @@ async function run(){
 $('#run').onclick=run;
 $('#txt').addEventListener('keydown',e=>{if(e.key==='Enter')run();});
 document.querySelectorAll('.ex').forEach(el=>el.onclick=()=>{$('#txt').value=el.dataset.ex; run();});
-run();   // run the default sentence on load
+run();
 </script>
 </body>
 </html>"""
