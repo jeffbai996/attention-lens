@@ -1,0 +1,10 @@
+# Core runtime deps for app.py
+transformer_lens>=2.0
+flask>=3.0
+# torch: install the build that matches your platform/CUDA from https://pytorch.org
+# (a bare `pip install torch` gets the default build, which is fine for CPU or
+#  a recent CUDA). Pinned loosely on purpose so it won't fight an existing install.
+torch>=2.1
+
+# numpy is only needed to run the test suite (test_mock.py); app.py doesn't import it.
+numpy>=1.24

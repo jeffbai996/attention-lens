@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# TransformerLens / HuggingFace model cache (can be many GB)
+.cache/
+*.safetensors
+*.bin
+
+# OS / editor
+.DS_Store
+*.swp
+.idea/
+.vscode/
